@@ -3,10 +3,11 @@ import subprocess
 cmd = "C:\\Users\\palbe\\Documents\\software\\sweph\\sweph\\bin\\swetest -b23.12.1991 -g, -ut3:44:00 -lat -geopos41.2,-73.47,65  -head -fJplZ -eswe -n5 -p0123456789"
 
 number_of_planets = 10
-orb = 15
+orb = 7
+number_of_aspects = 5
 output = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.read()
 #debugging tool
-print output
+print(output)
 #Write to file
 path = 'c:\\users\\palbe\\desktop\\astrofile.txt'
 
@@ -20,15 +21,10 @@ planet_date_array = []
 with open(path,'r') as f:
 	for line in f:
 		planet_date_array.append(line)
-#Test that planets are printing
-#print planet_date_array
 
 #Clean Data
-
 #Nest arrays; planet & positions for each date
 #arr0=first day, arr1=second day
-#debugging tool
-#print(len(planet_date_array))
 
 number_of_days = len(planet_date_array) / number_of_planets
 #debugging tool
@@ -57,20 +53,9 @@ while j <= number_of_steps:
 		i = i + 1
 	sorted_data.append(temp4)
 	j = j + 1
-print sorted_data
+print(sorted_data)
 
 #run calculations
-
-#sunDatesMatrix = [[0]*(number_of_planets+1)]*number_of_days
-#print sunDatesMatrix
-#moonDatesMatrix = [number_of_planets]*[number_of_days]
-#mercuryDatesMatrix = [number_of_planets]*[number_of_days]
-#marsDatesMatrix = [number_of_planets]*[number_of_days]
-#jupiterDatesMatrix = [number_of_planets]*[number_of_days]
-#saturnDatesMatrix = [number_of_planets]*[number_of_days]
-#uranusDatesMatrix = [number_of_planets]*[number_of_days]
-#neptuneDatesMatrix = [number_of_planets]*[number_of_days]
-#plutoDatesMatrix = [number_of_planets]*[number_of_days]
 natal_sun = sorted_data[1][2]
 natal_moon = sorted_data[1][4]
 natal_mercury = sorted_data[1][6]
@@ -93,599 +78,87 @@ print("uranus",natal_uranus)
 print("neptune",natal_neptune)
 print("pluto",natal_pluto)
 
-
-#planetary_matrix = []
-#for item in sorted_data:
 sun_delta_matrix = []
 print(len(sorted_data[1]))
-'''
-i=0
-j=2
-while i < len(sorted_data):
-	temp_calculations = []
-	temp_calculations.append(sorted_data[i][0])
-	while j < len(sorted_data[i]):
-		temp_calculations.append(abs(sorted_data[0][2] - sorted_data[i][j]))
-		j = j + 2
-	sun_delta_matrix.append(temp_calculations)
-	i = i + 1
-	j = 2
-'''
 
 i=0
 j=2
 sun_delta_matrix = []
-
-natal_sun_sun_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_moon_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_mercury_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_venus_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_mars_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_jupiter_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_saturn_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_uranus_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_neptune_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_sun_pluto_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-
-while i < len(sorted_data):
-	temp_calculations = []
-	temp_calculations.append(sorted_data[i][0])
-	natal_sun_sun_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_sun_moon_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_sun_mercury_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_sun_venus_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_sun_mars_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_sun_jupiter_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_sun_saturn_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_sun_neptune_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_sun_pluto_aspect_matrix[i][0] = sorted_data[i][0]
-	while j <= len(sorted_data[i]):
-		sun_delta = abs(sorted_data[0][2] - sorted_data[i][j])
-		temp_calculations.append(sun_delta)
-		#sun
-		if j == 2:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_sun_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_sun_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_sun_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_sun_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_sun_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#moon
-		elif j == 4:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_moon_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_moon_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_moon_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_moon_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_moon_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#mercury
-		elif j == 6:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_mercury_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_mercury_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_mercury_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_mercury_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_mercury_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#venus
-		elif j == 8:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_venus_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_venus_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_venus_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_venus_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_venus_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#mars
-		elif j == 10:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_mars_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_mars_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_mars_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_mars_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_mars_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#jupiter
-		elif j == 12:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_jupiter_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_jupiter_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_jupiter_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_jupiter_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_jupiter_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#saturn
-		elif j == 14:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_saturn_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_saturn_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_saturn_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_saturn_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_saturn_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#uranus
-		elif j == 16:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_uranus_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_uranus_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_uranus_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_uranus_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_uranus_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#neptune
-		elif j == 18:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_neptune_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_neptune_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_neptune_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_neptune_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_neptune_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#pluto
-		elif j == 20:
-			#conjunction
-			if  sun_delta <= orb:
-				natal_sun_pluto_aspect_matrix[i][1] = sun_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= sun_delta <= (60 + orb):
-				natal_sun_pluto_aspect_matrix[i][2] = sun_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= sun_delta <= (90 + orb):
-				natal_sun_pluto_aspect_matrix[i][3] = sun_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= sun_delta <= (120 + orb):
-				natal_sun_pluto_aspect_matrix[i][4] = sun_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= sun_delta <= (180 + orb):
-				natal_sun_pluto_aspect_matrix[i][5] = sun_delta
-				j = j + 2
-			else:
-				j = j + 2
-
-		else:
-			j = j + 2
-
-
-	sun_delta_matrix.append(temp_calculations)
-	i = i + 1
-	j = 2
-
-i=0
-j=2
 moon_delta_matrix = []
-natal_moon_sun_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_moon_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_mercury_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_venus_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_mars_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_jupiter_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_saturn_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_uranus_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_neptune_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-natal_moon_pluto_aspect_matrix = [[-1] * 6 for item in range(number_of_days)]
-while i < len(sorted_data):
-	temp_calculations = []
-	temp_calculations.append(sorted_data[i][0])
-	natal_moon_sun_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_moon_moon_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_moon_mercury_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_moon_venus_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_moon_mars_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_moon_jupiter_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_moon_saturn_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_moon_neptune_aspect_matrix[i][0] = sorted_data[i][0]
-	natal_moon_pluto_aspect_matrix[i][0] = sorted_data[i][0]
-	while j <= len(sorted_data[i]):
-		moon_delta = abs(sorted_data[0][4] - sorted_data[i][j])
-		temp_calculations.append(moon_delta)
-		#sun
-		if j == 2:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_sun_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_sun_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_sun_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_sun_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_sun_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#moon
-		elif j == 4:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_moon_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_moon_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_moon_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_moon_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_moon_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#mercury
-		elif j == 6:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_mercury_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_mercury_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_mercury_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_mercury_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_mercury_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#venus
-		elif j == 8:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_venus_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_venus_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_venus_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_venus_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_venus_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#mars
-		elif j == 10:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_mars_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_mars_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_mars_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_mars_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_mars_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#jupiter
-		elif j == 12:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_jupiter_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_jupiter_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_jupiter_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_jupiter_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_jupiter_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#saturn
-		elif j == 14:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_saturn_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_saturn_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_saturn_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_saturn_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_saturn_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#uranus
-		elif j == 16:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_uranus_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_uranus_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_uranus_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_uranus_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_uranus_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#neptune
-		elif j == 18:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_neptune_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_neptune_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_neptune_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_neptune_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_neptune_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
-		#pluto
-		elif j == 20:
-			#conjunction
-			if  moon_delta <= orb:
-				natal_moon_pluto_aspect_matrix[i][1] = moon_delta
-				j = j + 2
-			#sextile
-			elif (60 - orb) <= moon_delta <= (60 + orb):
-				natal_moon_pluto_aspect_matrix[i][2] = moon_delta
-				j = j + 2
-			#square
-			elif (90 - orb) <= moon_delta <= (90 + orb):
-				natal_moon_pluto_aspect_matrix[i][3] = moon_delta
-				j = j + 2
-			#trine
-			elif (120 - orb) <= moon_delta <= (120 + orb):
-				natal_moon_pluto_aspect_matrix[i][4] = moon_delta
-				j = j + 2
-			#opposition
-			elif  (180 - orb) <= moon_delta <= (180 + orb):
-				natal_moon_pluto_aspect_matrix[i][5] = moon_delta
-				j = j + 2
-			else:
-				j = j + 2
+mercury_delta_matrix = []
+venus_delta_matrix = []
+mars_delta_matrix = []
+jupiter_delta_matrix = []
+saturn_delta_matrix = []
+uranus_delta_matrix = []
+neptune_delta_matrix = []
+pluto_delta_matrix = []
 
-		else:
-			j = j + 2
+sun_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+moon_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+mercury_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+venus_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+mars_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+jupiter_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+saturn_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+uranus_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+neptune_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+pluto_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
 
+sun_aspect_matrix[i][0] = sorted_data[i][0]
+moon_aspect_matrix[i][0] = sorted_data[i][0]
+mercury_aspect_matrix[i][0] = sorted_data[i][0]
+venus_aspect_matrix[i][0] = sorted_data[i][0]
+mars_aspect_matrix[i][0] = sorted_data[i][0]
+jupiter_aspect_matrix[i][0] = sorted_data[i][0]
+saturn_aspect_matrix[i][0] = sorted_data[i][0]
+neptune_aspect_matrix[i][0] = sorted_data[i][0]
+pluto_aspect_matrix[i][0] = sorted_data[i][0]
 
-	moon_delta_matrix.append(temp_calculations)
-	i = i + 1
-	j = 2
-print('sun aspects')
-print(sun_delta_matrix)
-print(natal_sun_sun_aspect_matrix)
-print(natal_sun_moon_aspect_matrix)
-print(natal_sun_mercury_aspect_matrix)
-print(natal_sun_venus_aspect_matrix)
-print(natal_sun_mars_aspect_matrix)
-print(natal_sun_saturn_aspect_matrix)
-print(natal_sun_neptune_aspect_matrix)
-print(natal_sun_uranus_aspect_matrix)
-print(natal_sun_pluto_aspect_matrix)
-print('moon aspects')
-print(moon_delta_matrix)
-print(natal_moon_sun_aspect_matrix)
-print(natal_moon_moon_aspect_matrix)
-print(natal_moon_mercury_aspect_matrix)
-print(natal_moon_venus_aspect_matrix)
-print(natal_moon_mars_aspect_matrix)
-print(natal_moon_saturn_aspect_matrix)
-print(natal_moon_neptune_aspect_matrix)
-print(natal_moon_uranus_aspect_matrix)
-print(natal_moon_pluto_aspect_matrix)
+def astrology_array(planet_delta, aspect_matrix, l):
+	i = 0
+	while i < len(sorted_data):
+		j = 2
+		while j < len(sorted_data[i]):
+			temp_calculations = []
+			temp_calculations.append(sorted_data[i][0])
+			aspect_matrix[i][0] = sorted_data[i][0]
+			k = 0
+			while k < number_of_planets:
+				planet_delta_temp = round(sorted_data[0][l] - sorted_data[i][j], 3)
+				temp_calculations.append(planet_delta_temp)
+				aspect(planet_delta_temp, aspect_matrix, i, j, k)
+				k = k + 1
+				j = j + 2
+			planet_delta.append(temp_calculations)
+		i = i + 1
+	print(planet_delta)
+	print(aspect_matrix)
+
+def aspect(planet_delta, aspect_matrix, i, j, k,):
+	#conjunction
+	if  (orb * -1) <= planet_delta <= orb:
+		aspect_matrix[i][1 + (k * number_of_aspects)] = planet_delta
+	#sextile
+	elif ((60 - orb) <= planet_delta <= (60 + orb)) or ((-60 - orb) <= planet_delta <= (-60 + orb)):
+		aspect_matrix[i][2 + (k * number_of_aspects)] = planet_delta
+	#square
+	elif ((90 - orb) <= planet_delta <= (90 + orb)) or ((-90 - orb) <= planet_delta <= (-90 + orb)):
+		aspect_matrix[i][3 + (k * number_of_aspects)] = planet_delta
+	#trine
+	elif ((120 - orb) <= planet_delta <= (120 + orb)) or ((-120 - orb) <= planet_delta <= (-120 + orb)):
+		aspect_matrix[i][4 + (k * number_of_aspects)] = planet_delta
+	#opposition
+	elif ((180 - orb) <= planet_delta <= (180 + orb)) or ((-180 - orb) <= planet_delta <= (-180 + orb)):
+		aspect_matrix[i][5 + (k * number_of_aspects)] = planet_delta
+
+astrology_array(sun_delta_matrix,sun_aspect_matrix,2)
+astrology_array(moon_delta_matrix,moon_aspect_matrix,4)
+astrology_array(mercury_delta_matrix,mercury_aspect_matrix,6)
+astrology_array(venus_delta_matrix,venus_aspect_matrix,8)
+astrology_array(mars_delta_matrix,mars_aspect_matrix,10)
+astrology_array(jupiter_delta_matrix,jupiter_aspect_matrix,12)
+astrology_array(saturn_delta_matrix,saturn_aspect_matrix,14)
+astrology_array(uranus_delta_matrix,uranus_aspect_matrix,16)
+astrology_array(neptune_delta_matrix,neptune_aspect_matrix,18)
+astrology_array(pluto_delta_matrix,pluto_aspect_matrix,20)
