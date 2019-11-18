@@ -1,20 +1,23 @@
 import subprocess
-
-cmd = "C:\\Users\\palbe\\Documents\\software\\sweph\\sweph\\bin\\swetest -b23.12.1991 -g, -ut3:44:00 -lat -geopos41.2,-73.47,65  -head -fJplZ -eswe -n5 -p0123456789"
+import csv
+import time
+from io import BytesIO
+t0=time.process_time()
+cmd = "C:\\Users\\palbe\\Desktop\\Make\\swetest -b23.12.1991 -g, -ut3:44:00 -lat -geopos41.2,-73.47,65  -head -fTplZ -eswe -n36600  -p0123456789"
 
 number_of_planets = 10
 orb = 7
 number_of_aspects = 5
 output = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.read()
 #debugging tool
-print(output)
+#print(output)
 #Write to file
 path = 'c:\\users\\palbe\\desktop\\astrofile.txt'
 
-astro_file = open(path,'w')
 
-astro_file.write(output)
-astro_file.close()
+with open(path, 'wb') as astro_file:
+	astro_file.write(output)
+
 #Write file to array
 planet_date_array = []
 
@@ -46,15 +49,14 @@ i = 0
 number_of_steps = len(temp) / number_of_planets
 while j <= number_of_steps:
 	temp4 = []
-	temp4.append(float(temp[i][0]))
+	temp4.append(temp[i][0])
 	while i < (number_of_planets * j) :
 		temp4.append(temp[i][1])
 		temp4.append(float(temp[i][2]))
 		i = i + 1
 	sorted_data.append(temp4)
 	j = j + 1
-print(sorted_data)
-
+#print(sorted_data)
 #run calculations
 natal_sun = sorted_data[1][2]
 natal_moon = sorted_data[1][4]
@@ -78,87 +80,138 @@ print("uranus",natal_uranus)
 print("neptune",natal_neptune)
 print("pluto",natal_pluto)
 
-sun_delta_matrix = []
-print(len(sorted_data[1]))
+def aspect_name(planet_delta_temp):
+	global aspect
+	#conjunction
+	if  (orb * -1) <= planet_delta_temp <= orb:
+		aspect = "Conjunct, " + str(planet_delta_temp)
+		return aspect
+	#sextile
+	elif ((60 - orb) <= planet_delta_temp <= (60 + orb)) or ((-60 - orb) <= planet_delta_temp <= (-60 + orb)):
+		aspect = "Sextile, " + str(planet_delta_temp)
+		return aspect
+	#square
+	elif ((90 - orb) <= planet_delta_temp <= (90 + orb)) or ((-90 - orb) <= planet_delta_temp <= (-90 + orb)):
+		aspect = "Square, " + str(planet_delta_temp)
+		return aspect
+	#trine
+	elif ((120 - orb) <= planet_delta_temp <= (120 + orb)) or ((-120 - orb) <= planet_delta_temp <= (-120 + orb)):
+		aspect = "Trine, " + str(planet_delta_temp)
+		return aspect
+	#opposition
+	elif ((180 - orb) <= planet_delta_temp <= (180 + orb)) or ((-180 - orb) <= planet_delta_temp <= (-180 + orb)):
+		aspect = "Opposition, " + str(planet_delta_temp)
+		return aspect
+	else:
+		return False
 
-i=0
-j=2
-sun_delta_matrix = []
-moon_delta_matrix = []
-mercury_delta_matrix = []
-venus_delta_matrix = []
-mars_delta_matrix = []
-jupiter_delta_matrix = []
-saturn_delta_matrix = []
-uranus_delta_matrix = []
-neptune_delta_matrix = []
-pluto_delta_matrix = []
 
-sun_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-moon_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-mercury_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-venus_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-mars_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-jupiter_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-saturn_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-uranus_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-neptune_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
-pluto_aspect_matrix = [[-1] * ((number_of_aspects * number_of_planets) + 1) for item in range(number_of_days)]
+def p1_name(m):
+	global p1
+	if m == 2:
+		p1 ="N.Sun"
+		return p1
+	elif m == 4:
+		p1="N.Moon"
+		return p1
+	elif m == 6:
+		p1="N.Mercury"
+		return p1
+	elif m == 8:
+		p1="N.Venus"
+		return p1
+	elif m == 10:
+		p1="N.Mars"
+		return p1
+	elif m == 12:
+		p1="N.Jupiter"
+		return p1
+	elif m == 14:
+		p1="N.Saturn"
+		return p1
+	elif m == 16:
+		p1="N.Uranus"
+		return p1
+	elif m == 18:
+		p1 = "N.Neptune"
+		return p1
+	elif m == 20:
+		p1 = "N.Pluto"
+		return p1
 
-sun_aspect_matrix[i][0] = sorted_data[i][0]
-moon_aspect_matrix[i][0] = sorted_data[i][0]
-mercury_aspect_matrix[i][0] = sorted_data[i][0]
-venus_aspect_matrix[i][0] = sorted_data[i][0]
-mars_aspect_matrix[i][0] = sorted_data[i][0]
-jupiter_aspect_matrix[i][0] = sorted_data[i][0]
-saturn_aspect_matrix[i][0] = sorted_data[i][0]
-neptune_aspect_matrix[i][0] = sorted_data[i][0]
-pluto_aspect_matrix[i][0] = sorted_data[i][0]
 
-def astrology_array(planet_delta, aspect_matrix, l):
+def p2_name(j):
+	global p2
+	if j == 2:
+		p2=".V.Sun"
+		return p2
+	elif j == 4:
+		p2=".V.Moon"
+		return p2
+	elif j == 6:
+		p2=".V.Mercury"
+		return p2
+	elif j == 8:
+		p2=".V.Venus"
+		return p2
+	elif j == 10:
+		p2=".V.Mars"
+		return p2
+	elif j == 12:
+		p2=".V.Jupiter"
+		return p2
+	elif j == 14:
+		p2=".V.Saturn"
+		return p2
+	elif j == 16:
+		p2=".V.Uranus"
+		return p2
+	elif j == 18:
+		p2 = ".V.Neptune"
+		return p2
+	elif j == 20:
+		p2 = ".V.Pluto"
+		return p2
+
+master_delta_array = [['Date','NSun.V.Sun','NSun.v.Moon','NSun.V.Mercury','NSun.V.Venus','NSun.V.Mars','NSun.V.Jupiter','NSun.V.Saturn','NSun.V.Uranus','NSun.V.Neptune','NSun.V.Pluto','NMoon.V.Sun','NMoon.v.Moon','NMoon.V.Mercury','NMoon.V.Venus','NMoon.V.Mars','NMoon.V.Jupiter','NMoon.V.Saturn','NMoon.V.Uranus','NMoon.V.Neptune','NMoon.V.Pluto','NMercury.V.Sun','NMercury.v.Moon','NMercury.V.Mercury','NMercury.V.Venus','NMercury.V.Mars','NMercury.V.Jupiter','NMercury.V.Saturn','NMercury.V.Uranus','NMercury.V.Neptune','NMercury.V.Pluto','NVenus.V.Sun','NVenus.v.Moon','NVenus.V.Mercury','NVenus.V.Venus','NVenus.V.Mars','NVenus.V.Jupiter','NVenus.V.Saturn','NVenus.V.Uranus','NVenus.V.Neptune','NVenus.V.Pluto','NMars.V.Sun','NMars.v.Moon','NMars.V.Mercury','NMars.V.Venus','NMars.V.Mars','NMars.V.Jupiter','NMars.V.Saturn','NMars.V.Uranus','NMars.V.Neptune','NMars.V.Pluto','NJupiter.V.Sun','NJupiter.v.Moon','NJupiter.V.Mercury','NJupiter.V.Venus','NJupiter.V.Mars','NJupiter.V.Jupiter','NJupiter.V.Saturn','NJupiter.V.Uranus','NJupiter.V.Neptune','NJupiter.V.Pluto','NSaturn.V.Sun','NSaturn.v.Moon','NSaturn.V.Mercury','NSaturn.V.Venus','NSaturn.V.Mars','NSaturn.V.Jupiter','NSaturn.V.Saturn','NSaturn.V.Uranus','NSaturn.V.Neptune','NSaturn.V.Pluto','NUranus.V.Sun','NUranus.v.Moon','NUranus.V.Mercury','NUranus.V.Venus','NUranus.V.Mars','NUranus.V.Jupiter','NUranus.V.Saturn','NUranus.V.Uranus','NUranus.V.Neptune','NUranus.V.Pluto','NNeptune.V.Sun','NNeptune.v.Moon','NNeptune.V.Mercury','NNeptune.V.Venus','NNeptune.V.Mars','NNeptune.V.Jupiter','NNeptune.V.Saturn','NNeptune.V.Uranus','NNeptune.V.Neptune','NNeptune.V.Pluto','NPluto.V.Sun','NPluto.v.Moon','NPluto.V.Mercury','NPluto.V.Venus','NPluto.V.Mars','NPluto.V.Jupiter','NPluto.V.Saturn','NPluto.V.Uranus','NPluto.V.Neptune','NPluto.V.Pluto']]
+consolidated_aspects = []
+
+def astrology_array():
+	count = 0
 	i = 0
 	while i < len(sorted_data):
-		j = 2
-		while j < len(sorted_data[i]):
-			temp_calculations = []
-			temp_calculations.append(sorted_data[i][0])
-			aspect_matrix[i][0] = sorted_data[i][0]
-			k = 0
-			while k < number_of_planets:
-				planet_delta_temp = round(sorted_data[0][l] - sorted_data[i][j], 3)
-				temp_calculations.append(planet_delta_temp)
-				aspect(planet_delta_temp, aspect_matrix, i, j, k)
-				k = k + 1
+		m = 2
+		temp_data = []
+		temp_aspect = []
+		temp_aspect.append(sorted_data[i][0])
+		temp_data.append(sorted_data[i][0])
+		while m < 21:
+			j = 2
+			while j < 21:
+				planet_delta_temp = round(sorted_data[0][m] - sorted_data[i][j], 3)
+				temp_data.append(planet_delta_temp)
+				a = aspect_name(planet_delta_temp)
+				if a != False:
+					p1 = p1_name(m)
+					p2 = p2_name(j)
+					aspect_str = str(p1) + str(p2) + str(a)
+					temp_aspect.append(aspect_str)
+				count = count + 1
 				j = j + 2
-			planet_delta.append(temp_calculations)
+			m = m + 2
+		consolidated_aspects.append(temp_aspect)
+		master_delta_array.append(temp_data)
 		i = i + 1
-	print(planet_delta)
-	print(aspect_matrix)
+		t1 = time.process_time() - t0
+		print("Day: ", str(i), ", Time Elapsed: ",str(t1))
 
-def aspect(planet_delta, aspect_matrix, i, j, k,):
-	#conjunction
-	if  (orb * -1) <= planet_delta <= orb:
-		aspect_matrix[i][1 + (k * number_of_aspects)] = planet_delta
-	#sextile
-	elif ((60 - orb) <= planet_delta <= (60 + orb)) or ((-60 - orb) <= planet_delta <= (-60 + orb)):
-		aspect_matrix[i][2 + (k * number_of_aspects)] = planet_delta
-	#square
-	elif ((90 - orb) <= planet_delta <= (90 + orb)) or ((-90 - orb) <= planet_delta <= (-90 + orb)):
-		aspect_matrix[i][3 + (k * number_of_aspects)] = planet_delta
-	#trine
-	elif ((120 - orb) <= planet_delta <= (120 + orb)) or ((-120 - orb) <= planet_delta <= (-120 + orb)):
-		aspect_matrix[i][4 + (k * number_of_aspects)] = planet_delta
-	#opposition
-	elif ((180 - orb) <= planet_delta <= (180 + orb)) or ((-180 - orb) <= planet_delta <= (-180 + orb)):
-		aspect_matrix[i][5 + (k * number_of_aspects)] = planet_delta
+astrology_array()
+with open('master_delta_array.csv', 'w', newline='') as csvFile:
+	writer = csv.writer(csvFile)
+	writer.writerows(master_delta_array)
+csvFile.close()
 
-astrology_array(sun_delta_matrix,sun_aspect_matrix,2)
-astrology_array(moon_delta_matrix,moon_aspect_matrix,4)
-astrology_array(mercury_delta_matrix,mercury_aspect_matrix,6)
-astrology_array(venus_delta_matrix,venus_aspect_matrix,8)
-astrology_array(mars_delta_matrix,mars_aspect_matrix,10)
-astrology_array(jupiter_delta_matrix,jupiter_aspect_matrix,12)
-astrology_array(saturn_delta_matrix,saturn_aspect_matrix,14)
-astrology_array(uranus_delta_matrix,uranus_aspect_matrix,16)
-astrology_array(neptune_delta_matrix,neptune_aspect_matrix,18)
-astrology_array(pluto_delta_matrix,pluto_aspect_matrix,20)
+with open('astroaspects_reduced.csv', 'w', newline='') as csvFile:
+	writer = csv.writer(csvFile)
+	writer.writerows(consolidated_aspects)
+csvFile.close()
