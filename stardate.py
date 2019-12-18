@@ -1,9 +1,26 @@
 import subprocess
 import csv
 import time
+import psycopg2
 from io import BytesIO
+from datetime import datetime
+import pandas as pd
+
+conn = psycopg2.connect("host=localhost dbname=stardate-peter user=peter password=3nl1ght3n!")
+cur = conn.cursor()
+cur.execute('DROP TABLE IF EXISTS "consolidated_aspects"')
+cur.execute("""
+CREATE TABLE consolidated_aspects(
+id int PRIMARY KEY,
+date timestamptz,
+aspects text)
+""")
+
+
+
+
 t0=time.process_time()
-cmd = "C:\\Users\\palbe\\Desktop\\Make\\swetest -b23.12.1991 -g, -ut3:44:00 -lat -geopos41.2,-73.47,65  -head -fTplZ -eswe -n36600  -p0123456789"
+cmd = "C:\\Users\\palbe\\Desktop\\Make\\swetest -b23.12.1991 -g, -ut03:44:00 -lat -geopos41.2,-73.47,65  -head -fTplZ -eswe -n36600  -p0123456789"
 
 number_of_planets = 10
 orb = 7
@@ -183,8 +200,14 @@ def astrology_array():
 		m = 2
 		temp_data = []
 		temp_aspect = []
-		temp_aspect.append(sorted_data[i][0])
-		temp_data.append(sorted_data[i][0])
+		temp_aspect_start = ""
+		temp_aspect.append(i)
+		time_str = str(sorted_data[i][0])
+
+		time_stamp = pd.to_datetime(time_str, utc=True)
+		time_obj = time_stamp.date()
+		temp_aspect.append(time_obj)
+		temp_data.append(time_obj)
 		while m < 21:
 			j = 2
 			while j < 21:
@@ -194,18 +217,23 @@ def astrology_array():
 				if a != False:
 					p1 = p1_name(m)
 					p2 = p2_name(j)
-					aspect_str = str(p1) + str(p2) + str(a)
-					temp_aspect.append(aspect_str)
+					aspect_str = str(p1) + str(p2) + str(a) + "; "
+					temp_aspect_start +=  aspect_str
 				count = count + 1
 				j = j + 2
 			m = m + 2
+		temp_aspect.append(temp_aspect_start)
+		print(temp_aspect)
 		consolidated_aspects.append(temp_aspect)
+		cur.execute("INSERT INTO consolidated_aspects VALUES (%s, %s, %s)",(temp_aspect))
 		master_delta_array.append(temp_data)
 		i = i + 1
 		t1 = time.process_time() - t0
 		print("Day: ", str(i), ", Time Elapsed: ",str(t1))
 
 astrology_array()
+conn.commit()
+
 with open('master_delta_array.csv', 'w', newline='') as csvFile:
 	writer = csv.writer(csvFile)
 	writer.writerows(master_delta_array)
