@@ -1,0 +1,12 @@
+  #main {
+    display: flex;
+    flex-direction: column;
+  }
+  #input-section {
+    display: inline-flex;
+  }
+  
+  #name, #birthData {
+    display: flex;
+    flex-direction: column;
+  } 

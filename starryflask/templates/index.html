@@ -1,12 +1,72 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>StarDate</title>
-		<!-- <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}"> -->
-	</head>
-	<body>
-		<h2>StarDate Info</h2>
+<head>
+    <title>StarDate</title>
+    		<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+    <div id="main">
+        <form method = "post" id = "input-section">
+            <div id="name">
+                <label for="name">Name:</label><input type="text" id ="name" value="{{ request.form['name'] }}" name="name">
+                <label for="location">Location</label>
+                <input type="text" id="address">
+                <label for="orb">Orb of Conjunction</label>
+                <input type="number" id="orb" value = "{{ request.form['orb'] }}" name="orb">   
+            </div>
+            <div id="birthData">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id ="dob" value = "{{ request.form['dob'] }}" name="dob">
+                <label for="btime">Time of Birth (Local to birthplace):</label>
+                <input type="time" id ="btime" value = "{{ request.form['btime'] }}" name="btime">
+                <label for="startdate">Start Display Date</label>
+                <input type="date" id="startdate" value = "{{ request.form['startdate'] }}" name="startdate" >
 
-		<p align="center"><a href=consolidated_aspects ><button class=grey style="height:75px;width:150px">Consolidated Aspects</button></a></p>
-	</body>
-</html>
+                
+            </div>
+            <div id="birthData">
+                <label for="latitude">Latitude:</label><input type="text" id ="latitude" value = "{{ request.form['latitude'] }}" name="latitude">
+                <label for="longitude">Longitude:</label><input type="text" id ="longitude" value = "{{ request.form['longitude'] }}" name="longitude">
+                <label for="enddate">End Display Date (Max 100 years after DOB)</label>
+                <input type="date" id="enddate" value = "{{ request.form['enddate'] }}" name="enddate" >
+            </div>
+            
+            
+        <button type="submit">Submit</button>
+        </form>
+        
+    </div>
+
+    
+    
+    <p><a href=consolidated_aspects ><button class=grey style="height:75px;width:150px">Consolidated Aspects</button></a></p>
+    
+    <script>
+        document.getElementById('startdate').valueAsDate = new Date();
+        document.getElementById('btime').value = "12:00:00";
+        document.getElementById('orb').value = "7" ;
+    </script>
+    
+    
+    <!-- Here's the new Google API code... -->
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCmB25VRrXjHU4tfIjCyO_2cF7MGgTa37A&libraries=places"></script>
+    
+   
+
+		 
+    <script>
+        google.maps.event.addDomListener(window, 'load', initialize);
+        function initialize() {
+        var input = document.getElementById('address');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.addListener('place_changed', function () {
+        var place = autocomplete.getPlace();
+        // place variable will have all the information you are looking for.
+         
+          document.getElementById("latitude").value = place.geometry['location'].lat();
+          document.getElementById("longitude").value = place.geometry['location'].lng();
+        });
+        }
+    </script>
+</body>

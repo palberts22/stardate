@@ -1,0 +1,2 @@
+FLASK_APP=stardateFlask
+FLASK_ENV=development
