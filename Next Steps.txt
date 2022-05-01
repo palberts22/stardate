@@ -1,0 +1,47 @@
+Next steps:
+
+DJANGO FIXES:
+-startdate on form to filter SQL
+-a way to reset table for each user (for initial testing)
+-custom results page
+-style form page
+-make index login screen (and style it)
+
+PYTHON SCRIPT
+-fix date sorting/necessity to sort by PK when rendering
+-optimize datecalc timezone conversioin
+-allow output to be local or birth time zone (or something else)
+-add house support
+-add extrasolar support
+-speed up calculations wihth pandas dataframe and different matrix
+-optimize by turning each day into an object with methods to calculate deltas
+-speed up calculations with cython
+-set custom orb for spec. planets
+
+DEPLOY/BACKEND
+-integrate docker
+-set up server and secure it 
+-user auth/login
+-enable concurrent sessions
+-a different table for each username
+-cookie support
+-integrate with google calendar
+
+FRONT END
+-enable bootstrap
+-display output as SQL table or output to calendar
+-advanced SQL settings integration
+-setup login page for entry
+
+ADMIN
+-pay astrodienst for software before launch
+
+PLUS ULTRA
+-make natal chart
+-share charts
+-synastry
+-dating
+-data visualizations
+
+IDEAS FROM OTHERS:
+-From L: choose reference time (as in where is the moon at 7pm)

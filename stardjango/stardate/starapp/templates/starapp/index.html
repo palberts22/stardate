@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+    <title>StarDate</title>
+</head>
+<body>
+    <div id="main">
+        <form  method = "post" id = "input-section">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Submit</button>
+        </form>  
+    </div>
+    
+    
+    <!-- Here's the new Google API code... -->
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCmB25VRrXjHU4tfIjCyO_2cF7MGgTa37A&libraries=places"></script>
+    
+   
+
+		 
+    <script>
+        google.maps.event.addDomListener(window, 'load', initialize);
+        function initialize() {
+        var input = document.getElementById('id_address');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.addListener('place_changed', function () {
+        var place = autocomplete.getPlace();
+        // place variable will have all the information you are looking for.
+         
+          document.getElementById("id_latitude").value = place.geometry['location'].lat();
+          document.getElementById("id_longitude").value = place.geometry['location'].lng();
+        });
+        }
+    </script>
+</body>
