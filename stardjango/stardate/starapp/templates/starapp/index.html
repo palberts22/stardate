@@ -7,8 +7,9 @@
         <form  method = "post" id = "input-section">
             {% csrf_token %}
             {{ form }}
-            <button type="submit">Submit</button>
+            <button type="submit">Calculate</button>
         </form>  
+        <a href="{% url 'starapp:aspects' %}"><button type="submit">View Saved Data</button></a>
     </div>
     
     

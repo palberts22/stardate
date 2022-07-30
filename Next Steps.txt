@@ -45,3 +45,9 @@ PLUS ULTRA
 
 IDEAS FROM OTHERS:
 -From L: choose reference time (as in where is the moon at 7pm)
+
+Next:
+-display planetary degrees not just deltas
+-display planetary degrees but not as decimal, but with sign 
+-dates to class and each day as an object with methods 
+

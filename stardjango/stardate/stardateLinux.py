@@ -1,4 +1,4 @@
-def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb):
+def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb, username):
 
     import subprocess
     import csv
@@ -18,7 +18,7 @@ def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb):
     
 
     #REMOVE THIS LINE BEFORE GOING TO PRODUCTION
-    cur.execute('DELETE FROM starapp_sdate;')
+ #   cur.execute('DELETE FROM starapp_sdate;')
 
     # cur.execute("""
     # CREATE TABLE consolidated_aspects(
@@ -80,22 +80,24 @@ def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb):
         while i < (number_of_planets * j) :
             temp4.append(temp[i][1])
             temp4.append(float(temp[i][2]))
+            #adding signs
+            temp4.append(temp[i][3].replace('\n',''))
             i = i + 1
         sorted_data.append(temp4)
         j = j + 1
     #print(sorted_data)
     #run calculations
-
+    #revised from 2,4,6 to incorporate signs
     natal_sun = sorted_data[1][2]
-    natal_moon = sorted_data[1][4]
-    natal_mercury = sorted_data[1][6]
-    natal_venus = sorted_data[1][8]
-    natal_mars = sorted_data[1][10]
-    natal_jupiter = sorted_data[1][12]
-    natal_saturn = sorted_data[1][14]
-    natal_uranus = sorted_data[1][16]
-    natal_neptune = sorted_data[1][18]
-    natal_pluto = sorted_data[1][20]
+    natal_moon = sorted_data[1][5]
+    natal_mercury = sorted_data[1][8]
+    natal_venus = sorted_data[1][11]
+    natal_mars = sorted_data[1][14]
+    natal_jupiter = sorted_data[1][17]
+    natal_saturn = sorted_data[1][20]
+    natal_uranus = sorted_data[1][23]
+    natal_neptune = sorted_data[1][26]
+    natal_pluto = sorted_data[1][29]
     print("natal planetary degrees with 0 as 0 degrees Aries")
     print("sun",natal_sun)
     print("moon",natal_moon)
@@ -112,23 +114,23 @@ def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb):
         global aspect
         #conjunction
         if  (orb * -1) <= planet_delta_temp <= orb:
-            aspect = "Conjunct, " + str(planet_delta_temp)
+            aspect = "Conjuncts"
             return aspect
         #sextile
         elif ((60 - orb) <= planet_delta_temp <= (60 + orb)) or ((-60 - orb) <= planet_delta_temp <= (-60 + orb)):
-            aspect = "Sextile, " + str(planet_delta_temp)
+            aspect = "Sextiles"
             return aspect
         #square
         elif ((90 - orb) <= planet_delta_temp <= (90 + orb)) or ((-90 - orb) <= planet_delta_temp <= (-90 + orb)):
-            aspect = "Square, " + str(planet_delta_temp)
+            aspect = "Squares"
             return aspect
         #trine
         elif ((120 - orb) <= planet_delta_temp <= (120 + orb)) or ((-120 - orb) <= planet_delta_temp <= (-120 + orb)):
-            aspect = "Trine, " + str(planet_delta_temp)
+            aspect = "Trines"
             return aspect
         #opposition
         elif ((180 - orb) <= planet_delta_temp <= (180 + orb)) or ((-180 - orb) <= planet_delta_temp <= (-180 + orb)):
-            aspect = "Opposition, " + str(planet_delta_temp)
+            aspect = "Oppositions"
             return aspect
         else:
             return False
@@ -137,68 +139,68 @@ def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb):
     def p1_name(m):
         global p1
         if m == 2:
-            p1 ="N.Sun"
+            p1 ="Natal Sun "
             return p1
-        elif m == 4:
-            p1="N.Moon"
-            return p1
-        elif m == 6:
-            p1="N.Mercury"
+        elif m == 5:
+            p1="Natal Moon "
             return p1
         elif m == 8:
-            p1="N.Venus"
+            p1="Natal Mercury "
             return p1
-        elif m == 10:
-            p1="N.Mars"
-            return p1
-        elif m == 12:
-            p1="N.Jupiter"
+        elif m == 11:
+            p1="Natal Venus "
             return p1
         elif m == 14:
-            p1="N.Saturn"
+            p1="Natal Mars "
             return p1
-        elif m == 16:
-            p1="N.Uranus"
-            return p1
-        elif m == 18:
-            p1 = "N.Neptune"
+        elif m == 17:
+            p1="Natal Jupiter "
             return p1
         elif m == 20:
-            p1 = "N.Pluto"
+            p1="Natal Saturn "
+            return p1
+        elif m == 23:
+            p1="Natal Uranus "
+            return p1
+        elif m == 26:
+            p1 = "Natal Neptune "
+            return p1
+        elif m == 29:
+            p1 = "Natal Pluto "
             return p1
 
 
     def p2_name(j):
         global p2
         if j == 2:
-            p2=".V.Sun"
+            p2="transiting Sun at "
             return p2
-        elif j == 4:
-            p2=".V.Moon"
-            return p2
-        elif j == 6:
-            p2=".V.Mercury"
+        elif j == 5:
+            p2="transiting Moon at "
             return p2
         elif j == 8:
-            p2=".V.Venus"
+            p2="transiting Mercury at "
             return p2
-        elif j == 10:
-            p2=".V.Mars"
-            return p2
-        elif j == 12:
-            p2=".V.Jupiter"
+        elif j == 11:
+            p2="transiting Venus at "
             return p2
         elif j == 14:
-            p2=".V.Saturn"
+            p2="transiting Mars at "
             return p2
-        elif j == 16:
-            p2=".V.Uranus"
-            return p2
-        elif j == 18:
-            p2 = ".V.Neptune"
+        elif j == 17:
+            p2="transiting Jupiter at "
             return p2
         elif j == 20:
-            p2 = ".V.Pluto"
+            p2="transiting Saturn at "
+            return p2
+        elif j == 23:
+            p2="transiting Uranus at "
+            return p2
+        elif j == 26:
+            p2 = "transiting Neptune at "
+            return p2
+        elif j == 29:
+            p2 = "transiting Pluto at "
             return p2
 
     master_delta_array = [['Date','NSun.V.Sun','NSun.v.Moon','NSun.V.Mercury','NSun.V.Venus','NSun.V.Mars','NSun.V.Jupiter','NSun.V.Saturn','NSun.V.Uranus','NSun.V.Neptune','NSun.V.Pluto','NMoon.V.Sun','NMoon.v.Moon','NMoon.V.Mercury','NMoon.V.Venus','NMoon.V.Mars','NMoon.V.Jupiter','NMoon.V.Saturn','NMoon.V.Uranus','NMoon.V.Neptune','NMoon.V.Pluto','NMercury.V.Sun','NMercury.v.Moon','NMercury.V.Mercury','NMercury.V.Venus','NMercury.V.Mars','NMercury.V.Jupiter','NMercury.V.Saturn','NMercury.V.Uranus','NMercury.V.Neptune','NMercury.V.Pluto','NVenus.V.Sun','NVenus.v.Moon','NVenus.V.Mercury','NVenus.V.Venus','NVenus.V.Mars','NVenus.V.Jupiter','NVenus.V.Saturn','NVenus.V.Uranus','NVenus.V.Neptune','NVenus.V.Pluto','NMars.V.Sun','NMars.v.Moon','NMars.V.Mercury','NMars.V.Venus','NMars.V.Mars','NMars.V.Jupiter','NMars.V.Saturn','NMars.V.Uranus','NMars.V.Neptune','NMars.V.Pluto','NJupiter.V.Sun','NJupiter.v.Moon','NJupiter.V.Mercury','NJupiter.V.Venus','NJupiter.V.Mars','NJupiter.V.Jupiter','NJupiter.V.Saturn','NJupiter.V.Uranus','NJupiter.V.Neptune','NJupiter.V.Pluto','NSaturn.V.Sun','NSaturn.v.Moon','NSaturn.V.Mercury','NSaturn.V.Venus','NSaturn.V.Mars','NSaturn.V.Jupiter','NSaturn.V.Saturn','NSaturn.V.Uranus','NSaturn.V.Neptune','NSaturn.V.Pluto','NUranus.V.Sun','NUranus.v.Moon','NUranus.V.Mercury','NUranus.V.Venus','NUranus.V.Mars','NUranus.V.Jupiter','NUranus.V.Saturn','NUranus.V.Uranus','NUranus.V.Neptune','NUranus.V.Pluto','NNeptune.V.Sun','NNeptune.v.Moon','NNeptune.V.Mercury','NNeptune.V.Venus','NNeptune.V.Mars','NNeptune.V.Jupiter','NNeptune.V.Saturn','NNeptune.V.Uranus','NNeptune.V.Neptune','NNeptune.V.Pluto','NPluto.V.Sun','NPluto.v.Moon','NPluto.V.Mercury','NPluto.V.Venus','NPluto.V.Mars','NPluto.V.Jupiter','NPluto.V.Saturn','NPluto.V.Uranus','NPluto.V.Neptune','NPluto.V.Pluto']]
@@ -211,8 +213,8 @@ def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb):
             m = 2
             temp_data = []
             temp_aspect = []
-            temp_aspect_start = ""
-            temp_aspect.append(i)
+            temp_aspect_start = '\n'
+            temp_aspect.append(username)
             time_str = str(sorted_data[i][0])
 #Convert UTC TimeStamps to Localtime
             time_stampUTC = pd.to_datetime(time_str, dayfirst = True, utc=True)
@@ -220,26 +222,28 @@ def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb):
             #time_obj = time_stamp.date()
             temp_aspect.append(time_obj)
             temp_data.append(time_obj)
-            while m < 21:
+            while m < 31:
                 j = 2
-                while j < 21:
+                while j < 31:
                     planet_delta_temp = round(sorted_data[0][m] - sorted_data[i][j], 3)
                     temp_data.append(planet_delta_temp)
                     a = aspect_name(planet_delta_temp)
                     if a != False:
                         p1 = p1_name(m)
                         p2 = p2_name(j)
-                        aspect_str = str(p1) + str(p2) + str(a) + "; "
+                        aspect_str = str(p1) + "at " + str(sorted_data[0][m+1]) + " "  + str(a) + " " + str(p2) + "at " + str(sorted_data[i][j+1]) + ". Angle is " + str(planet_delta_temp) + " degrees;\n" 
                         temp_aspect_start +=  aspect_str
                     count = count + 1
-                    j = j + 2
-                m = m + 2
+                    j = j + 3
+                m = m + 3
+            #temp_aspect_start += "'"    
             temp_aspect.append(temp_aspect_start)
             print(temp_aspect)
             consolidated_aspects.append(temp_aspect)
+            print(temp_aspect[2])
             # cur.execute("INSERT INTO consolidated_aspects VALUES (%s, %s, %s)",(temp_aspect))
             #tablename hardcoded
-            cur.execute("INSERT INTO starapp_sdate VALUES (%s, %s, %s)",(temp_aspect))
+            cur.execute("INSERT INTO starapp_sdate (user_id, date, aspects) VALUES (%s, %s, E%s)",(temp_aspect))
 
             master_delta_array.append(temp_data)
             i = i + 1
@@ -262,4 +266,4 @@ def StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb):
     """
 
 if __name__ == '__main__':
-    StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb)
+    StarDateFunction(dob, btime, latitude, longitude, steps, timezoneid, orb, username)

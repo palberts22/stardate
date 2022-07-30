@@ -5,7 +5,7 @@ from datetime import datetime
 import pandas as pd
 import stardateLinux as SDL
 
-def tzconvert(dob, btime, latitude, longitude, steps, orb):
+def tzconvert(dob, btime, latitude, longitude, steps, orb, username):
 
     date = dob + " " + btime
     newdatetime = pd.to_datetime(date)
@@ -55,8 +55,8 @@ def tzconvert(dob, btime, latitude, longitude, steps, orb):
 
 
 
-    SDL.StarDateFunction(dob,btime,latitude,longitude, steps, timezoneid, orb)
+    SDL.StarDateFunction(dob,btime,latitude,longitude, steps, timezoneid, orb, username)
     #print(response.text)
 
 if __name__ == '__main__':
-    tzconvert(dob, btime, latitude, longitude, steps, orb)
+    tzconvert(dob, btime, latitude, longitude, steps, orb, username)

@@ -7,7 +7,7 @@
     <ul>
     {% for sdate in object_list %}
         
-        <li>{{ sdate.id_num }} - {{ sdate.date|date }} - {{ sdate.aspects }}</li>
+        <li>{{ sdate.id_num }} - {{ sdate.date|date }} - {{ sdate.aspects|linebreaksbr }}</li>
         
     {% endfor %}
     </ul>

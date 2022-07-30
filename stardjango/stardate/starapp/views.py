@@ -11,11 +11,14 @@ import time
 from datetime import datetime, date
 import datecalc as datecalc
 from tzconversion import tzconvert
+from django.contrib.auth.models import User
 
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required
 def index(request):
     if request.method == 'POST':
         form = StarForm(request.POST)
@@ -35,6 +38,8 @@ def index(request):
             
             
             #redundant lines below, converting django to strings because of legacy flask code
+            userid = request.user.id
+            SDate.objects.filter(user_id=userid).delete()
             dob = str(bdate)
             enddate = str(enddate)
             btime = str(btime)
@@ -45,7 +50,8 @@ def index(request):
             # end known redundancy
 
             steps = str(datecalc.calc(dob,enddate))
-            tzconvert(dob,btime,latitude,longitude,steps,orb)
+            
+            tzconvert(dob,btime,latitude,longitude,steps,orb, userid)
             return HttpResponseRedirect(reverse('starapp:aspects'))
     else:
         form = StarForm()
@@ -53,7 +59,7 @@ def index(request):
     
 # Need to turn into custom view
 
-class AspectsView(ListView):
+class AspectsView(LoginRequiredMixin, ListView):
     
     
     ##Next two lines are all thats really required if we drop "start date"
@@ -69,12 +75,18 @@ class AspectsView(ListView):
     #ordering = ['date']
     #paginate_by = 365
     def get_queryset(self):
+        userid = self.request.user.id
+
         startdatestr = self.request.session.get('startdatestr')
         startdatestr = str(startdatestr)
         startdate = datetime.strptime(startdatestr, "%Y-%m-%d")
         
+        #if startdatestr:
+        #    return SDate.objects.filter(date__gte = startdate) 
+        #return SDate.objects.all()
+        
         if startdatestr:
-            return SDate.objects.filter(date__gte = startdate) 
-        return SDate.objects.all()
+            return SDate.objects.filter(date__gte = startdate, user=userid) 
+        return SDate.objects.filter(user=userid)
          
    
