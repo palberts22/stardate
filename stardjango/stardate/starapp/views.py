@@ -15,10 +15,17 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+
 
 
 # Create your views here.
-@login_required
+
+class AdminLogin(LoginView):
+    template_name = "starapp/LoginView_form.html"
+
+
+@login_required(login_url='login/')
 def index(request):
     if request.method == 'POST':
         form = StarForm(request.POST)

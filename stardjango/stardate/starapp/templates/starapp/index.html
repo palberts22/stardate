@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <head>
     <title>StarDate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'css/bootstrap.min.js' %}"></script>
 </head>
 <body>
+    {% load crispy_forms_tags %}
+
     <div id="main">
         <form  method = "post" id = "input-section">
             {% csrf_token %}
-            {{ form }}
+            {{ form|crispy }}
             <button type="submit">Calculate</button>
         </form>  
         <a href="{% url 'starapp:aspects' %}"><button type="submit">View Saved Data</button></a>
