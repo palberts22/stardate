@@ -131,4 +131,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "starapp:index"
-LOGOUT_REDIRECT_URL = "starapp:LoginView_form.html"
+LOGOUT_REDIRECT_URL = "starapp:login"

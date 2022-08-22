@@ -6,10 +6,10 @@
         <form  method = "post" id = "input-section">
             {% csrf_token %}
             {{ form|crispy }}
-            <button type="submit" class = "btn btn-block">Calculate</button>
+            <button type="submit" class = "btn btn-block btn-primary">Calculate</button>
         </form>  
         <br>
-        <a href="{% url 'starapp:aspects' %}"><button type="submit" class="btn btn-block">View Saved Data</button></a>
+        <a href="{% url 'starapp:aspects' %}"><button type="submit" class="btn btn-block btn-primary">View Saved Data</button></a>
     </div>
     
     
