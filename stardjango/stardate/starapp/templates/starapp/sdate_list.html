@@ -1,33 +1,17 @@
-<!DOCTYPE html>
-<head>
-    <title>StarDate</title>
-</head>
-<body>
+{% extends 'starapp/header.html' %}
+    {% block content %}
     <div>
-    <ul>
-    {% for sdate in object_list %}
-        
-        <li>{{ sdate.id_num }} - {{ sdate.date|date }} - {{ sdate.aspects|linebreaksbr }}</li>
-        
-    {% endfor %}
-    </ul>
-    </div>
-    <!-- PAGINATION
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-    
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div> -->
-</body>
+        <table class="table">
+            <tr>
+                <th>Date</th>
+                <th>Aspects</th>
+            </tr>
+            {% for sdate in object_list %}
+            <tr>
+                <td>{{ sdate.date|date }}</td>
+                <td>{{ sdate.aspects|linebreaksbr }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>    
+{% endblock %}

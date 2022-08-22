@@ -66,6 +66,19 @@ def index(request):
     
 # Need to turn into custom view
 
+def AspectsTable(request):
+    model= SDate
+    userid = request.user.id
+
+    startdatestr = request.session.get('startdatestr')
+    startdatestr = str(startdatestr)
+    startdate = datetime.strptime(startdatestr, "%Y-%m-%d")
+    
+    if startdatestr:
+        return SDate.objects.filter(date__gte = startdate, user=userid) 
+    return SDate.objects.filter(user=userid)
+
+
 class AspectsView(LoginRequiredMixin, ListView):
     
     
