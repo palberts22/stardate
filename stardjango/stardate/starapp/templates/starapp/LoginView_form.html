@@ -1,10 +1,12 @@
 {% extends 'starapp/header.html' %}
-    {% block content %}
-    {% load crispy_forms_tags %}
+{% block content %}
+{% load crispy_forms_tags %}
 
-        <form method="POST">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <input class = "btn btn-block btn-primary" type="submit" name="submit">
-        </form>
-    {% endblock %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class = "btn btn-block btn-primary" type="submit" name="submit">
+    </form>
+    <br>
+    <a class = "btn btn-block btn-primary" href="{% url 'starapp:register' %}">Register New Account</a>
+{% endblock %}

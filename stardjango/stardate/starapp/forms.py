@@ -1,5 +1,7 @@
 from django import forms
 import datetime as dt
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class StarForm(forms.Form):
     name = forms.CharField(label='Name', max_length = 100)
@@ -14,3 +16,10 @@ class StarForm(forms.Form):
     delta = dt.datetime.now() + dt.timedelta(days=365)
     datedelta = dt.datetime.date(delta)
     enddate = forms.DateField(widget=forms.DateInput(attrs=dict(type='date')), label = 'End display date', initial= datedelta)
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "password1", "password2"]

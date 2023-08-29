@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from starapp.models import SDate
 from django.http import HttpResponse,HttpResponseRedirect
 from .forms import StarForm
@@ -12,6 +12,7 @@ from datetime import datetime, date
 import datecalc as datecalc
 from tzconversion import tzconvert
 from django.contrib.auth.models import User
+from .forms import RegisterForm
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -23,7 +24,6 @@ from django.contrib.auth.views import LoginView
 
 class AdminLogin(LoginView):
     template_name = "starapp/LoginView_form.html"
-
 
 @login_required(login_url='login/')
 def index(request):
@@ -109,4 +109,13 @@ class AspectsView(LoginRequiredMixin, ListView):
             return SDate.objects.filter(date__gte = startdate, user=userid) 
         return SDate.objects.filter(user=userid)
          
-   
+def register(response):
+    if response.method == "POST":
+        form = RegisterForm(response.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/login")
+    else:
+        form = RegisterForm()
+
+    return render(response, "starapp/register.html", {"form":form})
